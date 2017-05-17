@@ -1,0 +1,47 @@
+#!/bin/sh
+set -eu
+hostname="$1"
+
+echo "$hostname" > /etc/hostname
+hostname --file /etc/hostname
+
+fqdn=$(hostname --fqdn || true)
+if [ "$fqdn" != "$hostname" ]; then
+  # if hostname is bar.example.com, we also want `bar` to be in /etc/hosts
+  short_hostname=$(echo "$hostname" | cut -d . -f 1)
+  if [ "$short_hostname" != "$hostname" ] && ! grep -q "\s${short_hostname}" /etc/hosts; then
+    hostname="$hostname $short_hostname"
+  fi
+  printf "127.0.1.1\t%s\n" "$hostname" >> /etc/hosts
+fi
+
+# Stop cloud-init from resetting the hostname
+if [ -f /etc/cloud/cloud.cfg ]; then
+  sed -i -e '/^\s*-\s*\(set_hostname\|update_hostname\)/d' /etc/cloud/cloud.cfg
+fi
+if [ -x /usr/bin/apt-get ]; then
+  apt-get update
+  export DEBIAN_FRONTEND=noninteractive
+  apt-get -q -y install rsync chef
+  update-rc.d chef-client disable
+  service chef-client stop
+  exit
+fi
+echo "---------------------"
+echo "Unsupported platform: Installing chef-solo with omnibus package"
+echo "---------------------"
+echo
+
+for file in /etc/os-release /etc/issue; do
+  if [ -f $file ]; then
+    cat $file
+    break
+  fi
+done
+
+if ! which chef-solo >/dev/null ; then
+  # Install chef-solo via omnibus package that chef provides
+  # This script should install chef-solo in any Linux distribution
+  wget -O- https://opscode.com/chef/install.sh | bash
+  exit
+fi

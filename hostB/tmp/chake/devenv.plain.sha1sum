@@ -1,0 +1,12 @@
+5835213bd72873e87ee97e546d023ca970bf8c08  LICENSE
+69e5ad248a27b7980b493bbd9a94812e30fc9a6b  README.md
+a79d1b4a4367b82c593ed35fbca9630de97aed70  Rakefile
+455d91340b87d0ecddeef48c108fccb2e498fed8  Vagrantfile
+a70248580db38a6659bba1887c16ead12d8d2f6c  config.rb
+f3974717652db73b1e02bfd069302618e169143b  config/pjunb/ips.yaml
+b5f9224b3499428e6d441cc9fbde65c12ce64fcc  config/pjunb/ssh_config
+8664d9ec966166b9540b6f7c6d277195c2670092  config/roles/devenv.rb
+0ac64bd3fe854b9f36bd6c8b6c9ae4482030388a  cookbooks/basics/recipes/default.rb
+d4e08063f18576c3bfbc8321359927377d345886  nodes.yaml
+ec32c26a964c38f81d754cea98f08a548aadb8a6  tmp/chake/bootstrap-devenv
+540c841de1de01b4e6d3c5e32f66f28e464e624a  tmp/chake/devenv.json

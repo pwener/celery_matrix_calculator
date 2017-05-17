@@ -1,0 +1,1 @@
+{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"/home/artur/Documentos/unb/7semestre/fsd/bag_of_task/hostB","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
