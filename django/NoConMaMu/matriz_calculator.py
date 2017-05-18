@@ -1,15 +1,22 @@
 # Code calculator here
 
+def read_matrix(matrix_file):
+	f = open(matrix_file, 'r')
+
+	lines = [map(int, line.split(' ')) for line in f if line.strip() != '\n']
+	lines = [list(l) for l in lines]
+
+	return lines
+
+def print_matrix(M):
+	[print(element) for element in M]
+
 # Sample 3x3
-X = [[12, 7, 3],
-	[4, 5, 6],
-	[7, 8, 9]]
+A = read_matrix('input/A.matrix')
 
 
 # Sample 3x4
-Y = [[5, 8, 1, 2],
-	[6, 7, 3, 0],
-	[4, 5, 9, 1]]
+B = read_matrix('input/B.matrix')
 
 # Result is 3x4
 R = [[0, 0, 0, 0],
@@ -17,13 +24,10 @@ R = [[0, 0, 0, 0],
 	[0, 0, 0, 0]]
 
 
-for i in range(len(X)):
+for i in range(len(A)):
 	# New matriz have same quantity of Y rows
-	for j in range(len(Y[0])):
-		for k in range(len(Y)):
-			R[i][j] += X[i][k] * Y[k][j]
+	for j in range(len(B[0])):
+		for k in range(len(B)):
+			R[i][j] += A[i][k] * B[k][j]
 
-for r in R:
-	print(r)
-
-
+print_matrix(R)
