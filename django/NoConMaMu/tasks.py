@@ -1,3 +1,7 @@
+from __future__ import absolute_import, unicode_literals
+from celery import shared_task
+from time import sleep
+
 # Multiply line of A by column of B
 # A lenght should be equals to B lenght
 def calculate_element(A_line, B_column):
@@ -11,7 +15,7 @@ def calculate_element(A_line, B_column):
 
 		return final_element
 
-
+@shared_task
 # Given a line of matrix A, multiplied by another matrix B,
 # we have a new row of matrix.
 def calculate_line(A_line, B):
