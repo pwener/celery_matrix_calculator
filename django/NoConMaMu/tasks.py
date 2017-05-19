@@ -15,9 +15,9 @@ def calculate_element(A_line, B_column):
 
 		return final_element
 
-@shared_task
 # Given a line of matrix A, multiplied by another matrix B,
 # we have a new row of matrix.
+@shared_task
 def calculate_line(A_line, B):
 	new_line = []
 
@@ -28,3 +28,32 @@ def calculate_line(A_line, B):
 		new_line.append(element)
 
 	return new_line
+
+def read_matrix(matrix_file):
+        f = open(matrix_file, 'r')
+
+        lines = [map(int, line.split(' ')) for line in f if line.strip() != '\n']
+        lines = [list(l) for l in lines]
+
+        return lines
+
+def print_matrix(M):
+        [print(element) for element in M]
+
+def print_matrix_result():
+        # Sample 3x3
+        A = read_matrix('NoConMaMu/input/A.matrix')
+
+
+        # Sample 3x4
+        B = read_matrix('NoConMaMu/input/B.matrix')
+
+        R = []
+
+        for A_line in A:
+                result = calculate_line.delay(A_line, B)
+                while not result.ready():
+                        sleep(0.5)
+                R.append(result.get())
+
+        print_matrix(R)
