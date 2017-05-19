@@ -4,6 +4,7 @@ from NoConMaMu.tasks import calculate_line
 app = Celery(
     'NoConMaMu',
     broker='amqp://guest@localhost//',
+    app.conf.CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite',
 )
 
 # Code calculator here
@@ -19,7 +20,7 @@ def read_matrix(matrix_file):
 def print_matrix(M):
 	[print(element) for element in M]
 
-if __name__ == '__main__':
+def print_matrix_with_task():
 	# Sample 3x3
 	A = read_matrix('NoConMaMu/input/A.matrix')
 
