@@ -1,12 +1,12 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
-from time import sleep
+import time
 
 # Multiply line of A by column of B
 # A lenght should be equals to B lenght
 def calculate_element(A_line, B_column):
-	if len(A_line) is not len(B_column):
-		raise ValueError("A lenght is not equals to B lenght")
+	if len(A_line) != len(B_column):
+		raise ValueError("A lenght(%d) is not equals to B lenght(%d)" % (len(A_line), len(B_column)))
 	else:
 		final_element = 0
 
@@ -30,29 +30,39 @@ def calculate_line(A_line, B):
 	return new_line
 
 def read_matrix(matrix_file):
-        f = open(matrix_file, 'r')
+	f = open(matrix_file, 'r')
 
-        lines = [map(int, line.split(' ')) for line in f if line.strip() != '\n']
-        lines = [list(l) for l in lines]
+	lines = [map(int, line.strip().split(' ')) for line in f if line.strip() != '\n']
+	lines = [list(l) for l in lines]
 
-        return lines
+	return lines
 
 def print_matrix(M):
-        [print(element) for element in M]
+	[print(element) for element in M]
 
 def print_matrix_result():
-        # Sample 3x3
-        A = read_matrix('celery_matrix/input/A.matrix')
+	start = time.time()
 
-        # Sample 3x4
-        B = read_matrix('celery_matrix/input/B.matrix')
+	A = read_matrix('celery_matrix/input/A.matrix')
 
-        R = []
+	B = read_matrix('celery_matrix/input/B.matrix')
 
-        for A_line in A:
-                result = calculate_line.delay(A_line, B)
-                while not result.ready():
-                        pass
-                R.append(result.get())
+	R = []
 
-        print_matrix(R)
+	results = []
+
+	for A_line in A:
+		# Save one async task
+		results.append(calculate_line.delay(A_line, B))
+
+	# Iterate into async tasks and get result
+	for result in results:
+		while not result.ready():
+			pass
+		R.append(result.get())
+
+	end = time.time()
+
+	print_matrix(R)
+
+	print("Executed in %.3f sec", end-start)

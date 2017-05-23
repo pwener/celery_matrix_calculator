@@ -6,7 +6,6 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proj.settings')
 
 app = Celery('proj')
-app.conf.CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite'
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

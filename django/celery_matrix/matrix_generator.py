@@ -7,8 +7,12 @@ from random import randint
 def create_matrix(filename, order=4):
 	with open(filename, 'w') as out:
 		for line in range(0, order):
-			for matrix in range(0, order):
-				out.write('%d ' % randint(0, 1000))
+			for position in range(0, order):
+				element = '%d ' % randint(0, 1000)
+				if position is not (order-1):
+					out.write(element)
+				else:
+					out.write(element[:-1])
 			out.write('\n')
 
 if __name__ == '__main__':
