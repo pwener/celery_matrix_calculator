@@ -1,2 +1,4 @@
 # Exclude extensions
 *.pyc
+*.matrix
+*.sqlite

@@ -50,13 +50,8 @@ def print_matrix_result():
 	R = []
 
 	results = []
-
 	for A_line in A:
-		# Save one async task
-		results.append(calculate_line.delay(A_line, B))
-
-	# Iterate into async tasks and get result
-	for result in results:
+		result = calculate_line.delay(A_line, B)
 		while not result.ready():
 			pass
 		R.append(result.get())
